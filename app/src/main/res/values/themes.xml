@@ -15,7 +15,7 @@
 
     </style>
 
-    <style name="Theme.Kotlin_sample2.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Kotlin_sample2.NoActionBar.RedStatusBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/pomodoro_red</item>
         <item name="android:windowBackground">@color/pomodoro_red</item>
     </style>
@@ -24,7 +24,7 @@
         <item name="android:windowBackground">@color/dark_gray</item>
     </style>
 
-    <style name="Theme.Kotlin_sample2.WebView.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Kotlin_sample2.NoActionBar.TransparentStatusBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>

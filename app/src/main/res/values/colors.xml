@@ -22,4 +22,5 @@
     <color name="gray">#ffbdbdbd</color>
     <color name="light_gray">#ffefefef</color>
     <color name="dark_gray">#ff212121</color>
+    <color name="background_black">#222222</color>
 </resources>

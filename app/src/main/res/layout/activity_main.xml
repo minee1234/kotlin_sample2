@@ -19,7 +19,6 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C01" />
-
         <Button
             android:id="@+id/btn_p2_c02"
             android:layout_width="wrap_content"
@@ -28,7 +27,6 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C02" />
-
         <Button
             android:id="@+id/btn_p2_c03"
             android:layout_width="wrap_content"
@@ -37,7 +35,6 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C03" />
-
         <Button
             android:id="@+id/btn_p2_c04"
             android:layout_width="wrap_content"
@@ -59,7 +56,6 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C05" />
-
         <Button
             android:id="@+id/btn_p2_c06"
             android:layout_width="wrap_content"
@@ -68,7 +64,6 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C06" />
-
         <Button
             android:id="@+id/btn_p2_c07"
             android:layout_width="wrap_content"
@@ -77,7 +72,6 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C07" />
-
         <Button
             android:id="@+id/btn_p2_c08"
             android:layout_width="wrap_content"
@@ -85,6 +79,43 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P2 C08" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_p3_c01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P3 C01" />
+        <Button
+            android:id="@+id/btn_p3_c02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P3 C02" />
+        <Button
+            android:id="@+id/btn_p3_c03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P3 C03" />
+        <Button
+            android:id="@+id/btn_p3_c04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P3 C04" />
     </LinearLayout>
 
 </LinearLayout>

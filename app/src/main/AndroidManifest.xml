@@ -17,30 +17,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlin_sample2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".part3chapter01.P3C01MainActivity"></activity>
+        <activity android:name=".part3chapter04.P3C04MainActivity"></activity>
+        <activity android:name=".part3chapter03.P3C03MainActivity" />
+
+        <receiver
+            android:name=".part3chapter03.AlarmReceiver"
+            android:exported="false" />
+
+        <activity
+            android:name=".part3chapter02.P3C02MainActivity"
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.TransparentStatusBar" />
+
+        <service
+            android:name=".part3chapter01.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".part3chapter01.P3C01MainActivity" />
         <activity
             android:name=".part2chapter08.P2C08MainActivity"
-            android:theme="@style/Theme.Kotlin_sample2.WebView.NoActionBar" />
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.TransparentStatusBar" />
         <activity
             android:name=".part2chapter07.P2C07MainActivity"
             android:theme="@style/Theme.Kotlin_sample2.Recorder" />
         <activity
             android:name=".part2chapter06.P2C06MainActivity"
-            android:theme="@style/Theme.Kotlin_sample2.NoActionBar" />
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.RedStatusBar" />
         <activity
             android:name=".part2chapter05.P2C05PhotoFrameActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.Kotlin_sample2.NoActionBar" />
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.RedStatusBar" />
         <activity
             android:name=".part2chapter05.P2C05MainActivity"
-            android:theme="@style/Theme.Kotlin_sample2.NoActionBar" />
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.RedStatusBar" />
         <activity android:name=".part2chapter04.P2C04MainActivity" />
         <activity
             android:name=".part2chapter03.P2C03DiaryActivity"
-            android:theme="@style/Theme.Kotlin_sample2.NoActionBar" />
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.RedStatusBar" />
         <activity
             android:name=".part2chapter03.P2C03MainActivity"
-            android:theme="@style/Theme.Kotlin_sample2.NoActionBar" />
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.RedStatusBar" />
         <activity android:name=".part2chapter02.P2C02MainActivity" />
         <activity android:name=".part2chapter01.P2C01ResultActivity" />
         <activity android:name=".part2chapter01.P2C01MainActivity" />
