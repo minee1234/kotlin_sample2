@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1033091019458",
+    "firebase_url": "https://fcm-test-dea18-default-rtdb.firebaseio.com",
     "project_id": "fcm-test-dea18",
     "storage_bucket": "fcm-test-dea18.appspot.com"
   },

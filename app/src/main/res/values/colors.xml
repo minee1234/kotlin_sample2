@@ -23,4 +23,8 @@
     <color name="light_gray">#ffefefef</color>
     <color name="dark_gray">#ff212121</color>
     <color name="background_black">#222222</color>
+
+    <color name="gray_cc">#cccccc</color>
+    <color name="gray_ec">#ececec</color>
+    <color name="orange">#FF9800</color>
 </resources>
