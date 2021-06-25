@@ -16,10 +16,14 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.minee.kotlin_sample2.R
 import com.minee.kotlin_sample2.databinding.FragmentHomeBinding
+import com.minee.kotlin_sample2.part3chapter06.DBKey.Companion.CHILD_CHAT
 import com.minee.kotlin_sample2.part3chapter06.DBKey.Companion.DB_ARTICLES
+import com.minee.kotlin_sample2.part3chapter06.DBKey.Companion.DB_USERS
+import com.minee.kotlin_sample2.part3chapter06.chatlist.ChatListItem
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
+    private lateinit var userDB: DatabaseReference
     private lateinit var articleDB: DatabaseReference
     private lateinit var articleAdapter: ArticleAdapter
 
@@ -50,7 +54,34 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val fragmentHomeBinding = FragmentHomeBinding.bind(view)
         binding = fragmentHomeBinding
 
-        articleAdapter = ArticleAdapter()
+        articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
+            if (auth.currentUser != null) {
+                if (auth.currentUser!!.uid != articleModel.sellerId) {
+                    val chatRoom = ChatListItem(
+                        buyerId = auth.currentUser!!.uid,
+                        sellerId = articleModel.sellerId,
+                        itemTitle = articleModel.title,
+                        key = System.currentTimeMillis()
+                    )
+
+                    userDB.child(auth.currentUser!!.uid)
+                        .child(CHILD_CHAT)
+                        .push()
+                        .setValue(chatRoom)
+
+                    userDB.child(articleModel.sellerId)
+                        .child(CHILD_CHAT)
+                        .push()
+                        .setValue(chatRoom)
+
+                    Snackbar.make(view, "채팅방이 생성되었습니다. 채팅탭에서 확인해 주세요", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(view, "내가 등록한 아이템 입니다.", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                Snackbar.make(view, "로그인 후 사용해 주세요", Snackbar.LENGTH_SHORT).show()
+            }
+        })
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
         fragmentHomeBinding.addFloatingButton.setOnClickListener {
@@ -64,6 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         articleList.clear()
+        userDB = Firebase.database.reference.child(DB_USERS)
         articleDB = Firebase.database.reference.child(DB_ARTICLES)
         articleDB.addChildEventListener(dbEventListener)
     }

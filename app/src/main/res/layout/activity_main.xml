@@ -138,6 +138,14 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P3 C06" />
+        <Button
+            android:id="@+id/btn_p3_c07"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P3 C07" />
     </LinearLayout>
 
 </LinearLayout>

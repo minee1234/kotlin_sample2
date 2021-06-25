@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!--현위치 정보-->
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlin_sample2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".part3chapter06.home.AddArticleActivity"></activity>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="@string/naver_map_client_id" />  <!--Naver cloud platform 콘솔에서 application 등록시 생성-->
+
+        <activity android:name=".part3chapter07.P3C07MainActivity"></activity>
+        <activity
+            android:name=".part3chapter06.chatdetail.ChatRoomActivity"
+            android:theme="@style/Theme.Kotlin_sample2.Light.NoActionBar" />
+        <activity
+            android:name=".part3chapter06.home.AddArticleActivity"
+            android:theme="@style/Theme.Kotlin_sample2.Light.NoActionBar" />
         <activity
             android:name=".part3chapter06.P3C06MainActivity"
             android:theme="@style/Theme.Kotlin_sample2.Light.NoActionBar" />
@@ -100,6 +112,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
