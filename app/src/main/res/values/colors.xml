@@ -27,4 +27,10 @@
     <color name="gray_cc">#cccccc</color>
     <color name="gray_ec">#ececec</color>
     <color name="orange">#FF9800</color>
+
+    <color name="audio_player_background">#475263</color>
+    <color name="white_background">#ECECEC</color>
+    <color name="gray_97">#979797</color>
+    <color name="gray_aa">#aaaaaa</color>
+    <color name="seekbar_background">#D8D8D8</color>
 </resources>

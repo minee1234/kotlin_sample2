@@ -97,6 +97,9 @@ dependencies {
     // Google Location service
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
+    // ExoPlayer ( github.com/google/ExoPlayer )
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
