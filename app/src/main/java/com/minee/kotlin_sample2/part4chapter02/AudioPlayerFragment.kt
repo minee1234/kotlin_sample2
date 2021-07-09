@@ -3,9 +3,11 @@ package com.minee.kotlin_sample2.part4chapter02
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -18,9 +20,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
 
+    private val updateSeekRunnable = Runnable {
+        updateSeek()
+    }
     private var playerModel: PlayerModel = PlayerModel()
     private var binding: FragmentAudioPlayerBinding? = null
     private var player: SimpleExoPlayer? = null
@@ -35,9 +41,39 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
         initPlayerView(fragmentAudioPlayerBinding)
         initPlaylistButton(fragmentAudioPlayerBinding)
         initPlayControlButtons(fragmentAudioPlayerBinding)
+        initSeekBar(fragmentAudioPlayerBinding)
         initRecyclerView(fragmentAudioPlayerBinding)
 
         getAudioListFromServer()
+    }
+
+    private fun initSeekBar(fragmentAudioPlayerBinding: FragmentAudioPlayerBinding) {
+        fragmentAudioPlayerBinding.playerSeekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    player?.pause()
+                    binding?.let {
+                        it.playTimeTextView.text = String.format(
+                            "%02d:%02d",
+                            TimeUnit.SECONDS.toMinutes(progress.toLong()),
+                            progress % 60
+                        )
+                    }
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                player?.seekTo((seekBar.progress * 1000).toLong())
+                player?.play()
+            }
+
+        })
+        fragmentAudioPlayerBinding.playlistSeekBar.setOnTouchListener { v, event ->
+            true
+        }
     }
 
     private fun initPlayControlButtons(fragmentAudioPlayerBinding: FragmentAudioPlayerBinding) {
@@ -50,11 +86,12 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
             }
         }
         fragmentAudioPlayerBinding.skipNextImageView.setOnClickListener {
-            val player = this.player ?: return@setOnClickListener
-
+            val nextMusic = playerModel.nextMusic() ?: return@setOnClickListener
+            playMusic(nextMusic)
         }
         fragmentAudioPlayerBinding.skipPrevImageView.setOnClickListener {
-            val player = this.player ?: return@setOnClickListener
+            val prevMusic = playerModel.prevMusic() ?: return@setOnClickListener
+            playMusic(prevMusic)
         }
     }
 
@@ -64,7 +101,7 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
         }
         fragmentAudioPlayerBinding.playerView.player = player
         binding?.let { binding ->
-            player?.addListener(object: Player.Listener{
+            player?.addListener(object : Player.Listener {
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
                     super.onIsPlayingChanged(isPlaying)
                     if (isPlaying) {
@@ -73,13 +110,74 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
                         binding.playControlImageView.setImageResource(R.drawable.ic_play_arrow_48)
                     }
                 }
+
+                override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                    super.onMediaItemTransition(mediaItem, reason)
+                    val newIndex = mediaItem?.mediaId ?: return
+                    playerModel.currentPosition = newIndex.toInt()
+                    updatePlayerView(playerModel.currentMusicModel())
+                    playlistAdapter.submitList(playerModel.getAdapterModels())
+                }
+
+                override fun onPlaybackStateChanged(state: Int) {
+                    super.onPlaybackStateChanged(state)
+                    updateSeek()
+                }
             })
+        }
+    }
+
+    private fun updateSeek() {
+        val player = this.player ?: return
+
+        val dulation = if (player.duration >= 0) player.duration else 0
+        val position = player.currentPosition
+        updateSeekUi(dulation, position)
+
+        val state = player.playbackState
+        view?.removeCallbacks(updateSeekRunnable)
+        if (state != Player.STATE_IDLE && state != Player.STATE_ENDED) {
+            view?.postDelayed(updateSeekRunnable, 1000)
+        }
+
+    }
+
+    private fun updateSeekUi(dulation: Long, position: Long) {
+        binding?.let { binding ->
+            binding.playlistSeekBar.max = (dulation / 1000).toInt()
+            binding.playlistSeekBar.progress = (position / 1000).toInt()
+
+            binding.playerSeekBar.max = (dulation / 1000).toInt()
+            binding.playerSeekBar.progress = (position / 1000).toInt()
+
+            binding.playTimeTextView.text = String.format(
+                "%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(position),
+                (position / 1000) % 60
+            )
+            binding.totalTimeTextView.text = String.format(
+                "%02d:%02d",
+                TimeUnit.MINUTES.convert(dulation, TimeUnit.MILLISECONDS),
+                (dulation / 1000) % 60
+            )
+        }
+    }
+
+    private fun updatePlayerView(currentMusicModel: MusicModel?) {
+        currentMusicModel ?: return
+
+        binding?.let { binding ->
+            binding.trackTextView.text = currentMusicModel.track
+            binding.artistTextView.text = currentMusicModel.artist
+            Glide.with(binding.coverImageView.context)
+                .load(currentMusicModel.coverUrl)
+                .into(binding.coverImageView)
         }
     }
 
     private fun initRecyclerView(fragmentAudioPlayerBinding: FragmentAudioPlayerBinding) {
         playlistAdapter = PlaylistAdapter {
-            // todo 음악 재생
+            playMusic(it)
         }
 
         fragmentAudioPlayerBinding.playlistRecyclerView.apply {
@@ -90,10 +188,14 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
 
     private fun initPlaylistButton(fragmentAudioPlayerBinding: FragmentAudioPlayerBinding) {
         fragmentAudioPlayerBinding.playlistImageView.setOnClickListener {
-            // todo 서버에서 데이터를 받아오지 않은 상태일 때
+            if (playerModel.currentPosition == -1) {
+                return@setOnClickListener
+            }
 
-            fragmentAudioPlayerBinding.playerViewGroup.isVisible = playerModel.isWatchingPlaylistView
-            fragmentAudioPlayerBinding.playlistViewGroup.isVisible = playerModel.isWatchingPlaylistView.not()
+            fragmentAudioPlayerBinding.playerViewGroup.isVisible =
+                playerModel.isWatchingPlaylistView
+            fragmentAudioPlayerBinding.playlistViewGroup.isVisible =
+                playerModel.isWatchingPlaylistView.not()
 
             playerModel.isWatchingPlaylistView = !playerModel.isWatchingPlaylistView
         }
@@ -111,14 +213,12 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
                 .enqueue(object : Callback<MusicDto> {
                     override fun onResponse(call: Call<MusicDto>, response: Response<MusicDto>) {
                         Log.d("minee", "${response.body()}")
-                        
-                        response.body()?.let { musicDto ->
-                            val musicModelList = musicDto.musics.mapIndexed { index, musicEntity ->
-                                musicEntity.mapper(index.toLong())
-                            }
 
-                            setMusicList(musicModelList)
-                            playlistAdapter.submitList(musicModelList)
+                        response.body()?.let { musicDto ->
+                            playerModel = musicDto.mapper()
+
+                            setMusicList(playerModel.getAdapterModels())
+                            playlistAdapter.submitList(playerModel.getAdapterModels())
                         }
                     }
 
@@ -139,8 +239,26 @@ class AudioPlayerFragment : Fragment(R.layout.fragment_audio_player) {
                     .build()
             })
             player?.prepare()
-            player?.play()
         }
+    }
+
+    private fun playMusic(musicModel: MusicModel) {
+        playerModel.updateCurrentPosition(musicModel)
+        player?.seekTo(playerModel.currentPosition, 0)
+        player?.play()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        player?.pause()
+        view?.removeCallbacks(updateSeekRunnable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+        player?.release()
+        view?.removeCallbacks(updateSeekRunnable)
     }
 
     companion object {
