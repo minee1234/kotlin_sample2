@@ -1,6 +1,6 @@
 package com.minee.kotlin_sample2.part4chapter03.util
 
-import com.minee.kotlin_sample2.part4chapter03.Key
+import com.minee.kotlin_sample2.BuildConfig
 import com.minee.kotlin_sample2.part4chapter03.Url
 import com.minee.kotlin_sample2.part4chapter03.response.search.SearchResponse
 import retrofit2.Response
@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface ApiService {
     @GET(Url.GET_TMAP_LOCATION)
     suspend fun getSearchLocation(
-        @Header("appKey") appKey: String = Key.TMAP_API,
+        @Header("appKey") appKey: String = "${BuildConfig.TMAP_API_KEY}",
         @Query("version") version: Int = 1,
         @Query("callback") callback: String? = null,
         @Query("count") count: Int = 20,

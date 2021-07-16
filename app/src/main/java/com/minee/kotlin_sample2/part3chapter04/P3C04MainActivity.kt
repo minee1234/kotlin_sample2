@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.minee.kotlin_sample2.BuildConfig
 import com.minee.kotlin_sample2.R
 import com.minee.kotlin_sample2.databinding.ActivityP3C04MainBinding
 import com.minee.kotlin_sample2.part3chapter04.adapter.BookAdapter
@@ -49,7 +50,7 @@ class P3C04MainActivity : AppCompatActivity() {
 
         bookService = retrofit.create(BookService::class.java)
 
-        bookService.getBestSellerBooks(getString(R.string.interParkApiKey))
+        bookService.getBestSellerBooks("${BuildConfig.INTERPARK_API_KEY}")
             .enqueue(object : Callback<BestSellerDto> {
 
                 override fun onFailure(call: Call<BestSellerDto>, t: Throwable) {
@@ -83,7 +84,7 @@ class P3C04MainActivity : AppCompatActivity() {
     }
 
     private fun search(keyWord: String) {
-        bookService.getBooksByName(getString(R.string.interParkApiKey), keyWord)
+        bookService.getBooksByName("${BuildConfig.INTERPARK_API_KEY}", keyWord)
             .enqueue(object : Callback<SearchBookDto> {
                 override fun onFailure(call: Call<SearchBookDto>, t: Throwable) {
                     hideHistoryView()
