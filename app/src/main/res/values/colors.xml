@@ -33,4 +33,10 @@
     <color name="gray_97">#979797</color>
     <color name="gray_aa">#aaaaaa</color>
     <color name="seekbar_background">#D8D8D8</color>
+
+    <color name="blue_800">#1565c0</color>
+    <color name="green_800">#2e7d32</color>
+    <color name="yellow_800">#f9a825</color>
+    <color name="red_800">#c62828</color>
+    <color name="gray_800">#424242</color>
 </resources>

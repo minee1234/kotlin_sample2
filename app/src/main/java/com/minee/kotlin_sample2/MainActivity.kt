@@ -21,6 +21,8 @@ import com.minee.kotlin_sample2.part3chapter06.P3C06MainActivity
 import com.minee.kotlin_sample2.part3chapter07.P3C07MainActivity
 import com.minee.kotlin_sample2.part4chapter01.P4C01MainActivity
 import com.minee.kotlin_sample2.part4chapter02.P4C02MainActivity
+import com.minee.kotlin_sample2.part4chapter03.P4C03MainActivity
+import com.minee.kotlin_sample2.part4chapter06.P4C06MainActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,6 +50,9 @@ class MainActivity : AppCompatActivity() {
             R.id.btn_p3_c07 -> startActivity(Intent(this, P3C07MainActivity::class.java))
             R.id.btn_p4_c01 -> startActivity(Intent(this, P4C01MainActivity::class.java))
             R.id.btn_p4_c02 -> startActivity(Intent(this, P4C02MainActivity::class.java))
+            R.id.btn_p4_c03 -> startActivity(Intent(this, P4C03MainActivity::class.java))
+
+            R.id.btn_p4_c06 -> startActivity(Intent(this, P4C06MainActivity::class.java))
         }
     }
 }

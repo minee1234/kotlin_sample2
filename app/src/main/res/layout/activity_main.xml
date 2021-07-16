@@ -167,6 +167,28 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="P4 C02" />
+        <Button
+            android:id="@+id/btn_p4_c03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P4 C03" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_p4_c06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="P4 C06" />
 
     </LinearLayout>
 
