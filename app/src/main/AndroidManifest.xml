@@ -11,6 +11,8 @@
     <!-- To request foreground location access, declare one of these permissions. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -20,13 +22,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlin_sample2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".part4chapter06.P4C06MainActivity"></activity>
+
+        <activity
+            android:name=".part4chapter06.P4C06MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Kotlin_sample2.NoActionBar.TranslucentStatus" />
+        <receiver android:name=".part4chapter06.appwidget.SimpleAirQualityWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_simple_info" />
+        </receiver>
+        <service android:name=".part4chapter06.appwidget.SimpleAirQualityWidgetProvider$UpdateWidgetService"
+            android:foregroundServiceType="location"/>
+
+
         <activity android:name=".part4chapter03.P4C03MapActivity" />
         <activity android:name=".part4chapter03.P4C03MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_MAPS_API_KEY}" />
+
 
         <activity
             android:name=".part4chapter02.P4C02MainActivity"
@@ -35,7 +54,9 @@
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="@string/naver_map_client_id" /> <!-- Naver cloud platform 콘솔에서 application 등록시 생성 -->
+            android:value="${NAVER_MAP_CLIENT_ID}" /> <!-- Naver cloud platform 콘솔에서 application 등록시 생성 -->
+
+
         <activity android:name=".part3chapter07.P3C07MainActivity" />
         <activity
             android:name=".part3chapter06.chatdetail.ChatRoomActivity"
@@ -52,15 +73,21 @@
         <activity android:name=".part3chapter05.P3C05MainActivity" />
         <activity android:name=".part3chapter04.P3C04DetailActivity" />
         <activity android:name=".part3chapter04.P3C04MainActivity" />
+
+
         <activity android:name=".part3chapter03.P3C03MainActivity" />
 
         <receiver
             android:name=".part3chapter03.AlarmReceiver"
             android:exported="false" />
 
+
         <activity
             android:name=".part3chapter02.P3C02MainActivity"
             android:theme="@style/Theme.Kotlin_sample2.NoActionBar.TransparentStatusBar" />
+
+
+        <activity android:name=".part3chapter01.P3C01MainActivity" />
 
         <service
             android:name=".part3chapter01.MyFirebaseMessagingService"
@@ -70,7 +97,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".part3chapter01.P3C01MainActivity" />
+
         <activity
             android:name=".part2chapter08.P2C08MainActivity"
             android:theme="@style/Theme.Kotlin_sample2.NoActionBar.TransparentStatusBar" />
@@ -125,6 +152,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

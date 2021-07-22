@@ -36,5 +36,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/audio_player_background</item>
     </style>
+    
+    <style name="Theme.Kotlin_sample2.NoActionBar.TranslucentStatus" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 
 </resources>
